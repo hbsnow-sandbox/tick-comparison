@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { ControlPanel } from "./components/control-panel";
 import { TickVisualization } from "./components/tick-visualization";
-import { generateD3Ticks } from "./lib/ticks/d3-ticks";
+import { generateD3Ticks, generateD3TicksWithNice } from "./lib/ticks/d3-ticks";
 import { generateRechartsTicks } from "./lib/ticks/recharts-ticks";
 import { generateEchartsTicks } from "./lib/ticks/echarts-ticks";
 
@@ -12,6 +12,10 @@ export function Page() {
 
   const d3Result = useMemo(() => {
     return generateD3Ticks(min, max, tickCount);
+  }, [min, max, tickCount]);
+
+  const d3NiceResult = useMemo(() => {
+    return generateD3TicksWithNice(min, max, tickCount);
   }, [min, max, tickCount]);
 
   const rechartsResult = useMemo(() => {
@@ -49,6 +53,15 @@ export function Page() {
             min={min}
             max={max}
             ticks={d3Result}
+            color="hsl(var(--chart-1))"
+            desiredTickCount={tickCount}
+          />
+
+          <TickVisualization
+            title="D3 (scale.nice().ticks)"
+            min={min}
+            max={max}
+            ticks={d3NiceResult}
             color="hsl(var(--chart-1))"
             desiredTickCount={tickCount}
           />
